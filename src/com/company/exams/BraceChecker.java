@@ -1,11 +1,11 @@
 package com.company.exams;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Stack;
 
 class BraceChecker {
 
-    private ArrayList<Character> bracesValidatorArray = new ArrayList<>();
+    private Stack<Character> bracesValidatorArray = new Stack<>();
     private HashMap<Character, Character> bracePair = new HashMap<>();
 
     BraceChecker() {
@@ -19,24 +19,30 @@ class BraceChecker {
 
         for (char element : bracesCharArray) {
             if(bracePair.containsKey(element) || bracePair.containsValue(element)) {
-                bracesValidatorArray.add(element);
+                bracesValidatorArray.push(element);
             }
 
             if(isPair()) {
-                bracesValidatorArray.remove(bracesValidatorArray.size() - 1);
-                bracesValidatorArray.remove(bracesValidatorArray.size() - 1);
+                bracesValidatorArray.pop();
+                bracesValidatorArray.pop();
             }
         }
         return bracesValidatorArray.size() <= 0;
     }
 
     private boolean isPair() {
-        try {
-            char head = bracesValidatorArray.get(bracesValidatorArray.size() - 2);
-            char tail = bracesValidatorArray.get(bracesValidatorArray.size() - 1);
-            return bracePair.get(head) == tail;
-        } catch (Exception e) {
+        if(bracesValidatorArray.size() < 2) {
             return false;
         }
+
+        char head = bracesValidatorArray.get(bracesValidatorArray.size() - 2);
+        char tail = bracesValidatorArray.get(bracesValidatorArray.size() - 1);
+
+        if(!bracePair.containsKey(head)) {
+            return false;
+        }
+
+        return bracePair.get(head) == tail;
+
     }
 }
